@@ -1,0 +1,15 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:XamlBrewer.Uwp.Controls">
+
+    <Style TargetType="local:Rating">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Rating">
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
