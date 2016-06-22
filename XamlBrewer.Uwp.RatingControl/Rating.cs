@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -124,14 +125,10 @@ namespace XamlBrewer.Uwp.Controls
             if (surface != null)
             {
                 surface.Tapped += Surface_Tapped;
+                surface.ManipulationDelta += Surface_ManipulationDelta;
             }
 
             base.OnApplyTemplate();
-        }
-
-        private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Value = (int)(e.GetPosition(this).X / ActualWidth * Maximum) + 1;
         }
 
         private static void OnStructureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -178,6 +175,45 @@ namespace XamlBrewer.Uwp.Controls
             {
 
             }
+        }
+
+        private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            var value = RoundI((e.Position.X / ActualWidth * Maximum) + 1, StepFrequency);
+            if (value < 0)
+            {
+                value = 0;
+            }
+            else if (value > Maximum)
+            {
+                value = Maximum;
+            }
+
+            Value = value;
+        }
+
+        private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Value = (int)(e.GetPosition(this).X / ActualWidth * Maximum) + 1;
+        }
+
+        public static double RoundI(double number, double roundingInterval)
+        {
+            if (roundingInterval == 0) { return 0; }
+
+            double intv = Math.Abs(roundingInterval);
+            double modulo = number % intv;
+            if ((intv - modulo) == modulo)
+            {
+                var temp = (number - modulo).ToString("#.##################");
+                if (temp.Length != 0 && temp[temp.Length - 1] % 2 == 0) modulo *= -1;
+            }
+            else if ((intv - modulo) < modulo)
+                modulo = (intv - modulo);
+            else
+                modulo *= -1;
+
+            return number + modulo;
         }
     }
 }

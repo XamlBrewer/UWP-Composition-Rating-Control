@@ -16,10 +16,12 @@
                        FontSize="24" />
             <controls:Rating x:Name="Rating"
                              ItemHeight="48"
-                             Padding="12" />
+                             Padding="12"
+                             StepFrequency=".5" />
             <Slider Minimum="0"
                     Maximum="{Binding ElementName=Rating, Path=Maximum}"
-                    Value="{Binding ElementName=Rating, Path=Value, Mode=TwoWay}"  />
+                    StepFrequency="{Binding ElementName=Rating, Path=StepFrequency}"
+                    Value="{Binding ElementName=Rating, Path=Value, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </Page>

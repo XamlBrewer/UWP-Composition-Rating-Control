@@ -14,7 +14,9 @@
                                     VerticalAlignment="Center"
                                     Background="Black" />
                         <!-- Interacts with touch and mouse and so. -->
-                        <Grid x:Name="PART_Surface" Background="Transparent" />
+                        <Grid x:Name="PART_Surface"
+                              ManipulationMode="TranslateX"
+                              Background="Transparent" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
