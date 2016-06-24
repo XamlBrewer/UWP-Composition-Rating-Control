@@ -16,7 +16,7 @@
                        FontSize="24" />
             <controls:Rating x:Name="Rating"
                              ItemHeight="48"
-                             Padding="12"
+                             ItemPadding="24"
                              StepFrequency=".5"
                              EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.jpg"
                              FilledImage="ms-appx:///Assets/RatingImages/devil_full.jpg" />

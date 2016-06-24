@@ -147,24 +147,37 @@ namespace XamlBrewer.Uwp.Controls
             var panel = c.GetTemplateChild(ItemsPartName) as StackPanel;
             if (panel != null)
             {
+                var leftPadding = 0;
+                var rightPadding = c.ItemPadding / 2;
+
                 for (int i = 0; i < c.Maximum; i++)
                 {
+                    if (i == 1)
+                    {
+                        leftPadding = c.ItemPadding / 2;
+                    }
+
+                    if (i == c.Maximum - 1)
+                    {
+                        rightPadding = 0;
+                    }
+
+                    // Create grid.
                     var grid = new Grid
                     {
                         Height = c.ItemHeight,
                         Width = c.ItemHeight,
-                        Margin = new Thickness(0, 0, c.ItemPadding, 0)
+                        Margin = new Thickness(leftPadding, 0, rightPadding, 0)
                     };
                     panel.Children.Add(grid);
+
+                    // Load 'empty' image.
                     var root = grid.GetVisual();
                     var compositor = root.Compositor;
                     var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
                     var spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
                     root.Children.InsertAtTop(spriteVisual);
-                    var surfaceBrush = compositor.CreateSurfaceBrush();
-                    CompositionImage imageSource = imageFactory.CreateImageFromUri(c.EmptyImage);
-                    surfaceBrush.Surface = imageSource.Surface;
                     var options = new CompositionImageOptions()
                     {
                         DecodeWidth = c.ItemHeight,
@@ -199,6 +212,8 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            // TODO: consider the paddings.
+
             var value = RoundToInterval((e.Position.X / ActualWidth * Maximum) + 1, StepFrequency);
             if (value < 0)
             {
@@ -246,5 +261,7 @@ namespace XamlBrewer.Uwp.Controls
             ElementCompositionPreview.SetElementChildVisual(element, root);
             return root;
         }
+
+
     }
 }
