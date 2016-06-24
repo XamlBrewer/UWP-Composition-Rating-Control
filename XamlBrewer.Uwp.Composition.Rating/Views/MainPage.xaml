@@ -17,7 +17,9 @@
             <controls:Rating x:Name="Rating"
                              ItemHeight="48"
                              Padding="12"
-                             StepFrequency=".5" />
+                             StepFrequency=".5"
+                             EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.jpg"
+                             FilledImage="ms-appx:///Assets/RatingImages/devil_full.jpg" />
             <Slider Minimum="0"
                     Maximum="{Binding ElementName=Rating, Path=Maximum}"
                     StepFrequency="{Binding ElementName=Rating, Path=StepFrequency}"

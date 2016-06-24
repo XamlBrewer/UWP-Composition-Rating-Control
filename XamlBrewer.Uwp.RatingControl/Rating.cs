@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Microsoft.UI.Composition.Toolkit;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -145,14 +149,30 @@ namespace XamlBrewer.Uwp.Controls
             {
                 for (int i = 0; i < c.Maximum; i++)
                 {
-                    panel.Children.Add(
-                        new Grid
-                        {
-                            Background = new SolidColorBrush(Colors.BlueViolet),
-                            Height = c.ItemHeight,
-                            Width = c.ItemHeight,
-                            Margin = new Thickness(0, 0, c.ItemPadding, 0)
-                        });
+                    var grid = new Grid
+                    {
+                        Height = c.ItemHeight,
+                        Width = c.ItemHeight,
+                        Margin = new Thickness(0, 0, c.ItemPadding, 0)
+                    };
+                    panel.Children.Add(grid);
+                    var root = grid.GetVisual();
+                    var compositor = root.Compositor;
+                    var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
+                    var spriteVisual = compositor.CreateSpriteVisual();
+                    spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
+                    root.Children.InsertAtTop(spriteVisual);
+                    var surfaceBrush = compositor.CreateSurfaceBrush();
+                    CompositionImage imageSource = imageFactory.CreateImageFromUri(c.EmptyImage);
+                    surfaceBrush.Surface = imageSource.Surface;
+                    var options = new CompositionImageOptions()
+                    {
+                        DecodeWidth = c.ItemHeight,
+                        DecodeHeight = c.ItemHeight
+                    };
+                    var image = imageFactory.CreateImageFromUri(c.EmptyImage, options);
+                    var brush = compositor.CreateSurfaceBrush(image.Surface);
+                    spriteVisual.Brush = brush;
                 }
             }
 
@@ -179,7 +199,7 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            var value = RoundI((e.Position.X / ActualWidth * Maximum) + 1, StepFrequency);
+            var value = RoundToInterval((e.Position.X / ActualWidth * Maximum) + 1, StepFrequency);
             if (value < 0)
             {
                 value = 0;
@@ -197,7 +217,7 @@ namespace XamlBrewer.Uwp.Controls
             Value = (int)(e.GetPosition(this).X / ActualWidth * Maximum) + 1;
         }
 
-        public static double RoundI(double number, double roundingInterval)
+        public static double RoundToInterval(double number, double roundingInterval)
         {
             if (roundingInterval == 0) { return 0; }
 
@@ -214,6 +234,17 @@ namespace XamlBrewer.Uwp.Controls
                 modulo *= -1;
 
             return number + modulo;
+        }
+    }
+
+    public static class UIElementExtensions
+    {
+        public static ContainerVisual GetVisual(this UIElement element)
+        {
+            var hostVisual = ElementCompositionPreview.GetElementVisual(element);
+            var root = hostVisual.Compositor.CreateContainerVisual();
+            ElementCompositionPreview.SetElementChildVisual(element, root);
+            return root;
         }
     }
 }
