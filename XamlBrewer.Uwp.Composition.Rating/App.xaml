@@ -14,7 +14,7 @@
                          Color="Black" />
         <!-- Splitview Pane -->
         <SolidColorBrush x:Key="SplitViewBackgroundBrush"
-                         Color="Red" />
+                         Color="#e60000" />
         <SolidColorBrush x:Key="SplitViewForegroundBrush"
                          Color="White" />
         <SolidColorBrush x:Key="SplitViewHighlightBrush"

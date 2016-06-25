@@ -11,8 +11,7 @@
                         <StackPanel x:Name="PART_Items"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Background="Black" />
+                                    VerticalAlignment="Center" />
                         <!-- Interacts with touch and mouse and so. -->
                         <Grid x:Name="PART_Surface"
                               ManipulationMode="TranslateX"

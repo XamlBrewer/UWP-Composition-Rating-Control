@@ -114,8 +114,8 @@
     <None Include="XamlBrewer.Uwp.Composition.Rating_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\RatingImages\devil_empty.jpg" />
-    <Content Include="Assets\RatingImages\devil_full.jpg" />
+    <Content Include="Assets\RatingImages\devil_empty.png" />
+    <Content Include="Assets\RatingImages\devil_full.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

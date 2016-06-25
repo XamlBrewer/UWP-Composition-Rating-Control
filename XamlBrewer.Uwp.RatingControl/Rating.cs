@@ -76,6 +76,8 @@ namespace XamlBrewer.Uwp.Controls
             this.DefaultStyleKey = typeof(Rating);
         }
 
+        private List<InsetClip> Clips { get; set; } = new List<InsetClip>();
+
         public int Maximum
         {
             get { return (int)GetValue(MaximumProperty); }
@@ -147,16 +149,11 @@ namespace XamlBrewer.Uwp.Controls
             var panel = c.GetTemplateChild(ItemsPartName) as StackPanel;
             if (panel != null)
             {
-                var leftPadding = 0;
-                var rightPadding = c.ItemPadding / 2;
+                var rightPadding = c.ItemPadding;
 
+                c.Clips.Clear();
                 for (int i = 0; i < c.Maximum; i++)
                 {
-                    if (i == 1)
-                    {
-                        leftPadding = c.ItemPadding / 2;
-                    }
-
                     if (i == c.Maximum - 1)
                     {
                         rightPadding = 0;
@@ -167,14 +164,16 @@ namespace XamlBrewer.Uwp.Controls
                     {
                         Height = c.ItemHeight,
                         Width = c.ItemHeight,
-                        Margin = new Thickness(leftPadding, 0, rightPadding, 0)
+                        Margin = new Thickness(0, 0, rightPadding, 0)
                     };
                     panel.Children.Add(grid);
 
-                    // Load 'empty' image.
+                    // Load images.
                     var root = grid.GetVisual();
                     var compositor = root.Compositor;
                     var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
+
+                    // Empty image.
                     var spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
                     root.Children.InsertAtTop(spriteVisual);
@@ -186,10 +185,19 @@ namespace XamlBrewer.Uwp.Controls
                     var image = imageFactory.CreateImageFromUri(c.EmptyImage, options);
                     var brush = compositor.CreateSurfaceBrush(image.Surface);
                     spriteVisual.Brush = brush;
+
+                    // Filled image.
+                    spriteVisual = compositor.CreateSpriteVisual();
+                    spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
+                    var clip = compositor.CreateInsetClip();
+                    c.Clips.Add(clip);
+                    spriteVisual.Clip = clip;
+                    root.Children.InsertAtTop(spriteVisual);
+                    image = imageFactory.CreateImageFromUri(c.FilledImage, options);
+                    brush = compositor.CreateSurfaceBrush(image.Surface);
+                    spriteVisual.Brush = brush;
                 }
             }
-
-            // ...
 
             OnValueChanged(c);
         }
@@ -206,7 +214,21 @@ namespace XamlBrewer.Uwp.Controls
             var panel = c.GetTemplateChild(ItemsPartName) as StackPanel;
             if (panel != null)
             {
-
+                for (int i = 0; i < c.Maximum; i++)
+                {
+                    if (i <= Math.Floor(c.Value - 1))
+                    {
+                        c.Clips[i].RightInset = 0;
+                    }
+                    else if (i > Math.Ceiling(c.Value - 1))
+                    {
+                        c.Clips[i].RightInset = c.ItemHeight;
+                    }
+                    else
+                    {
+                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToInterval(c.Value - Math.Floor(c.Value) , c.StepFrequency));
+                    }
+                }
             }
         }
 
