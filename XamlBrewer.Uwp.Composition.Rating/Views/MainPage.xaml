@@ -19,7 +19,7 @@
             <controls:Rating x:Name="Rating"
                              ItemHeight="48"
                              ItemPadding="24"
-                             StepFrequency=".25"
+                             StepFrequency=".1"
                              EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.png"
                              FilledImage="ms-appx:///Assets/RatingImages/devil_full.png" />
             <!-- Uncomment to see the two-way binding in action -->

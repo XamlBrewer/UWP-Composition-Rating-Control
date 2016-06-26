@@ -1,20 +1,12 @@
 ﻿using Microsoft.UI.Composition.Toolkit;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Shapes;
 
 namespace XamlBrewer.Uwp.Controls
 {
@@ -146,6 +138,11 @@ namespace XamlBrewer.Uwp.Controls
         {
             Rating c = (Rating)d;
 
+            if ((c.StepFrequency <= 0) || (c.StepFrequency > 1))
+            {
+                c.StepFrequency = 1;
+            }
+
             var panel = c.GetTemplateChild(ItemsPartName) as StackPanel;
             if (panel != null)
             {
@@ -231,7 +228,7 @@ namespace XamlBrewer.Uwp.Controls
                     else
                     {
                         // Curtain.
-                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToInterval(c.Value - Math.Floor(c.Value), c.StepFrequency));
+                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToFraction(c.Value - Math.Floor(c.Value), c.StepFrequency));
                     }
                 }
             }
@@ -239,9 +236,13 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            // TODO: consider the paddings.
+            // Floor.
+            var value = Math.Floor(e.Position.X / (ActualWidth + ItemPadding) * Maximum);
 
-            var value = RoundToInterval((e.Position.X / ActualWidth * Maximum) + 1, StepFrequency);
+            // Step.
+            value += Math.Min(RoundToFraction(((e.Position.X - (ItemHeight + ItemPadding) * (value)) / (ItemHeight)), StepFrequency), 1);
+
+            // Keep within range.
             if (value < 0)
             {
                 value = 0;
@@ -256,22 +257,18 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Value = (int)(e.GetPosition(this).X / ActualWidth * Maximum) + 1;
+            Value = (int)(e.GetPosition(this).X / (ActualWidth + ItemPadding) * Maximum) + 1;
         }
 
-        public static double RoundToInterval(double number, double roundingInterval)
+        public static double RoundToFraction(double number, double fraction)
         {
-            if (roundingInterval == 0) { return 0; }
+            // We assume that fraction is a value between 0 and 1.
+            if (fraction <= 0) { return 0; }
+            if (fraction > 1) { return number; }
 
-            double intv = Math.Abs(roundingInterval);
-            double modulo = number % intv;
-            if ((intv - modulo) == modulo)
-            {
-                var temp = (number - modulo).ToString("#.##################");
-                if (temp.Length != 0 && temp[temp.Length - 1] % 2 == 0) modulo *= -1;
-            }
-            else if ((intv - modulo) < modulo)
-                modulo = (intv - modulo);
+            double modulo = number % fraction;
+            if ((fraction - modulo) <= modulo)
+                modulo = (fraction - modulo);
             else
                 modulo *= -1;
 
@@ -288,7 +285,5 @@ namespace XamlBrewer.Uwp.Controls
             ElementCompositionPreview.SetElementChildVisual(element, root);
             return root;
         }
-
-
     }
 }
