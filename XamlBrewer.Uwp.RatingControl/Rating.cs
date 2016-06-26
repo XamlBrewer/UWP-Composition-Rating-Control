@@ -152,6 +152,21 @@ namespace XamlBrewer.Uwp.Controls
                 var rightPadding = c.ItemPadding;
 
                 c.Clips.Clear();
+
+                // Load images.
+                var root = panel.GetVisual();
+                var compositor = root.Compositor;
+                var options = new CompositionImageOptions()
+                {
+                    DecodeWidth = c.ItemHeight,
+                    DecodeHeight = c.ItemHeight
+                };
+                var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
+                var image = imageFactory.CreateImageFromUri(c.EmptyImage, options);
+                var emptyBrush = compositor.CreateSurfaceBrush(image.Surface);
+                image = imageFactory.CreateImageFromUri(c.FilledImage, options);
+                var fullBrush = compositor.CreateSurfaceBrush(image.Surface);
+
                 for (int i = 0; i < c.Maximum; i++)
                 {
                     if (i == c.Maximum - 1)
@@ -167,24 +182,13 @@ namespace XamlBrewer.Uwp.Controls
                         Margin = new Thickness(0, 0, rightPadding, 0)
                     };
                     panel.Children.Add(grid);
-
-                    // Load images.
-                    var root = grid.GetVisual();
-                    var compositor = root.Compositor;
-                    var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
+                    var gridRoot = grid.GetVisual();
 
                     // Empty image.
                     var spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
-                    root.Children.InsertAtTop(spriteVisual);
-                    var options = new CompositionImageOptions()
-                    {
-                        DecodeWidth = c.ItemHeight,
-                        DecodeHeight = c.ItemHeight
-                    };
-                    var image = imageFactory.CreateImageFromUri(c.EmptyImage, options);
-                    var brush = compositor.CreateSurfaceBrush(image.Surface);
-                    spriteVisual.Brush = brush;
+                    gridRoot.Children.InsertAtTop(spriteVisual);
+                    spriteVisual.Brush = emptyBrush;
 
                     // Filled image.
                     spriteVisual = compositor.CreateSpriteVisual();
@@ -192,10 +196,8 @@ namespace XamlBrewer.Uwp.Controls
                     var clip = compositor.CreateInsetClip();
                     c.Clips.Add(clip);
                     spriteVisual.Clip = clip;
-                    root.Children.InsertAtTop(spriteVisual);
-                    image = imageFactory.CreateImageFromUri(c.FilledImage, options);
-                    brush = compositor.CreateSurfaceBrush(image.Surface);
-                    spriteVisual.Brush = brush;
+                    gridRoot.Children.InsertAtTop(spriteVisual);
+                    spriteVisual.Brush = fullBrush;
                 }
             }
 
@@ -218,15 +220,18 @@ namespace XamlBrewer.Uwp.Controls
                 {
                     if (i <= Math.Floor(c.Value - 1))
                     {
+                        // Filled image.
                         c.Clips[i].RightInset = 0;
                     }
                     else if (i > Math.Ceiling(c.Value - 1))
                     {
+                        // Empty image.
                         c.Clips[i].RightInset = c.ItemHeight;
                     }
                     else
                     {
-                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToInterval(c.Value - Math.Floor(c.Value) , c.StepFrequency));
+                        // Curtain.
+                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToInterval(c.Value - Math.Floor(c.Value), c.StepFrequency));
                     }
                 }
             }
