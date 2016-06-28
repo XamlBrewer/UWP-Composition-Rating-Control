@@ -117,6 +117,9 @@ namespace XamlBrewer.Uwp.Controls
         /// </summary>
         protected override void OnApplyTemplate()
         {
+            // Ensures that ActualWidth is actually the actual width.
+            HorizontalAlignment = HorizontalAlignment.Left;
+
             OnStructureChanged(this);
 
             var surface = this.GetTemplateChild(InteractionPartName) as Grid;

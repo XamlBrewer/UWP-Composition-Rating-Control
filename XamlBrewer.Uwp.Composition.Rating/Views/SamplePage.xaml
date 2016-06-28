@@ -1,0 +1,72 @@
+﻿<Page x:Class="XamlBrewer.Uwp.Composition.Rating.SamplePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:XamlBrewer.Uwp.Composition.Rating.Views"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="using:XamlBrewer.Uwp.Controls"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Background="SlateGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <controls:Rating x:Name="Devils"
+                         Maximum="4"
+                         ItemHeight="60"
+                         ItemPadding="24"
+                         StepFrequency=".1"
+                         EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.png"
+                         FilledImage="ms-appx:///Assets/RatingImages/devil_full.png"
+                         Margin="24 0"
+                         Grid.Row="1" />
+
+        <TextBlock Text="{Binding ElementName=Devils, Path=Value}"
+                   Foreground="White"
+                   FontSize="24"
+                   VerticalAlignment="Center"
+                   Grid.Row="1"
+                   Grid.Column="1" />
+
+        <controls:Rating x:Name="Stars"
+                         ItemHeight="48"
+                         ItemPadding="12"
+                         StepFrequency=".25"
+                         EmptyImage="ms-appx:///Assets/RatingImages/star_empty.png"
+                         FilledImage="ms-appx:///Assets/RatingImages/star_full.png"
+                         Margin="24 0"
+                         Grid.Row="2" />
+
+        <TextBlock Text="{Binding ElementName=Stars, Path=Value}"
+                   Foreground="White"
+                   FontSize="24"
+                   VerticalAlignment="Center"
+                   Grid.Row="2"
+                   Grid.Column="1" />
+
+        <controls:Rating x:Name="Hearts"
+                         Maximum="8"
+                         ItemHeight="36"
+                         ItemPadding="12"
+                         StepFrequency="1"
+                         EmptyImage="ms-appx:///Assets/RatingImages/heart_empty.png"
+                         FilledImage="ms-appx:///Assets/RatingImages/heart_full.png"
+                         Margin="24 0"
+                         Grid.Row="3" />
+
+        <TextBlock Text="{Binding ElementName=Hearts, Path=Value}"
+                   Foreground="White"
+                   FontSize="24"
+                   VerticalAlignment="Center"
+                   Grid.Row="3"
+                   Grid.Column="1" />
+    </Grid>
+</Page>

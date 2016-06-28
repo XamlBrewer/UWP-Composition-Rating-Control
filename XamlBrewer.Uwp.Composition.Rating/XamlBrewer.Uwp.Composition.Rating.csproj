@@ -105,6 +105,9 @@
     <Compile Include="ViewModels\MenuItem.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\SamplePage.xaml.cs">
+      <DependentUpon>SamplePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shell.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +119,10 @@
   <ItemGroup>
     <Content Include="Assets\RatingImages\devil_empty.png" />
     <Content Include="Assets\RatingImages\devil_full.png" />
+    <Content Include="Assets\RatingImages\heart_empty.png" />
+    <Content Include="Assets\RatingImages\heart_full.png" />
+    <Content Include="Assets\RatingImages\star_empty.png" />
+    <Content Include="Assets\RatingImages\star_full.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -133,6 +140,10 @@
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SamplePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shell.xaml">
       <Generator>MSBuild:Compile</Generator>

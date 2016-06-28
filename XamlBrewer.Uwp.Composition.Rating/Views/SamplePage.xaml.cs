@@ -2,9 +2,9 @@
 
 namespace XamlBrewer.Uwp.Composition.Rating
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class SamplePage : Page
     {
-        public MainPage()
+        public SamplePage()
         {
             this.InitializeComponent();
         }
