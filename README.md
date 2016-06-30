@@ -7,8 +7,8 @@ Comes with the following dependency properties:
 * Value (double): current value (from 0 to Maximum)
 * ItemHeight (int): height (and width) of each image in device independent pixels
 * ImagePadding (int): pixels between images
-* FilledImage (urn): path to the filled image
-* EmptyImage (urn): path to the empty image
+* FilledImage (uri): path to the filled image
+* EmptyImage (uri): path to the empty image
 * IsInteractive (bool): whether or not the control responds to user input (tapping or sliding)
 
 Behavior:
