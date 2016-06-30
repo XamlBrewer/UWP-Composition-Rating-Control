@@ -9,7 +9,7 @@ Comes with the following dependency properties:
 * ImagePadding (int): pixels between images
 * FilledImage (urn): path to the filled image
 * EmptyImage (urn): path to the empty image
-* [TODO] IsInteractive (bool): whether or not the control responds to user input (tapping or sliding)
+* IsInteractive (bool): whether or not the control responds to user input (tapping or sliding)
 
 Behavior:
 * Tap on an image to apply the integral value
