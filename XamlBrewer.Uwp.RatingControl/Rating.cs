@@ -61,6 +61,12 @@ namespace XamlBrewer.Uwp.Controls
             typeof(Rating),
             new PropertyMetadata(2, OnStructureChanged));
 
+        public static readonly DependencyProperty IsInteractiveProperty = DependencyProperty.Register(
+            nameof(IsInteractive), 
+            typeof(bool), 
+            typeof(Rating), 
+            new PropertyMetadata(true));
+
         #endregion
 
         public Rating()
@@ -110,6 +116,12 @@ namespace XamlBrewer.Uwp.Controls
         {
             get { return (int)GetValue(ItemPaddingProperty); }
             set { SetValue(ItemPaddingProperty, value); }
+        }
+
+        public bool IsInteractive
+        {
+            get { return (bool)GetValue(IsInteractiveProperty); }
+            set { SetValue(IsInteractiveProperty, value); }
         }
 
         /// <summary>
@@ -239,6 +251,11 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            if (!IsInteractive)
+            {
+                return;
+            }
+
             // Floor.
             var value = Math.Floor(e.Position.X / (ActualWidth + ItemPadding) * Maximum);
 
@@ -260,6 +277,11 @@ namespace XamlBrewer.Uwp.Controls
 
         private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            if (!IsInteractive)
+            {
+                return;
+            }
+
             Value = (int)(e.GetPosition(this).X / (ActualWidth + ItemPadding) * Maximum) + 1;
         }
 

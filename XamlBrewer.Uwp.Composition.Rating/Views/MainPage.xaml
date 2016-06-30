@@ -23,7 +23,8 @@
                              ItemPadding="24"
                              StepFrequency=".1"
                              EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.png"
-                             FilledImage="ms-appx:///Assets/RatingImages/devil_full.png" />
+                             FilledImage="ms-appx:///Assets/RatingImages/devil_full.png"
+                             IsInteractive ="true" />
 
             <Slider Minimum="0"
                     Maximum="{Binding ElementName=Rating, Path=Maximum}"
