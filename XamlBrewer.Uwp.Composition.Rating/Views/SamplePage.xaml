@@ -7,7 +7,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
 
-    <Grid Background="SlateGray">
+    <Grid Background="{ThemeResource PageBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -16,6 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -27,14 +28,15 @@
                          EmptyImage="ms-appx:///Assets/RatingImages/devil_empty.png"
                          FilledImage="ms-appx:///Assets/RatingImages/devil_full.png"
                          Margin="24 0"
-                         Grid.Row="1" />
+                         Grid.Row="1"
+                         Grid.Column="1" />
 
         <TextBlock Text="{Binding ElementName=Devils, Path=Value}"
-                   Foreground="White"
+                   Foreground="{ThemeResource PageForegroundBrush}"
                    FontSize="24"
                    VerticalAlignment="Center"
                    Grid.Row="1"
-                   Grid.Column="1" />
+                   Grid.Column="2" />
 
         <controls:Rating x:Name="Stars"
                          ItemHeight="48"
@@ -43,14 +45,15 @@
                          EmptyImage="ms-appx:///Assets/RatingImages/star_empty.png"
                          FilledImage="ms-appx:///Assets/RatingImages/star_full.png"
                          Margin="24 0"
-                         Grid.Row="2" />
+                         Grid.Row="2"
+                         Grid.Column="1" />
 
         <TextBlock Text="{Binding ElementName=Stars, Path=Value}"
-                   Foreground="White"
+                   Foreground="{ThemeResource PageForegroundBrush}"
                    FontSize="24"
                    VerticalAlignment="Center"
                    Grid.Row="2"
-                   Grid.Column="1" />
+                   Grid.Column="2" />
 
         <controls:Rating x:Name="Hearts"
                          Maximum="8"
@@ -60,13 +63,14 @@
                          EmptyImage="ms-appx:///Assets/RatingImages/heart_empty.png"
                          FilledImage="ms-appx:///Assets/RatingImages/heart_full.png"
                          Margin="24 0"
-                         Grid.Row="3" />
+                         Grid.Row="3"
+                         Grid.Column="1" />
 
         <TextBlock Text="{Binding ElementName=Hearts, Path=Value}"
-                   Foreground="White"
+                   Foreground="{ThemeResource PageForegroundBrush}"
                    FontSize="24"
                    VerticalAlignment="Center"
                    Grid.Row="3"
-                   Grid.Column="1" />
+                   Grid.Column="2" />
     </Grid>
 </Page>
