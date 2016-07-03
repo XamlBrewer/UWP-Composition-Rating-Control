@@ -35,7 +35,7 @@ namespace XamlBrewer.Uwp.Controls
             nameof(StepFrequency),
             typeof(double),
             typeof(Rating),
-            new PropertyMetadata(1d, OnStructureChanged));
+            new PropertyMetadata(.5, OnStructureChanged));
 
         public static readonly DependencyProperty EmptyImageProperty = DependencyProperty.Register(
             nameof(EmptyImage),
@@ -152,6 +152,16 @@ namespace XamlBrewer.Uwp.Controls
         private static void OnStructureChanged(DependencyObject d)
         {
             Rating c = (Rating)d;
+
+            if (c.EmptyImage == null)
+            {
+                c.EmptyImage = new Uri("ms-appx:///XamlBrewer.Uwp.RatingControl/Assets/defaultStar_empty.png");
+            }
+
+            if (c.FilledImage == null)
+            {
+                c.FilledImage = new Uri("ms-appx:///XamlBrewer.Uwp.RatingControl/Assets/defaultStar_full.png");
+            }
 
             if ((c.StepFrequency <= 0) || (c.StepFrequency > 1))
             {
