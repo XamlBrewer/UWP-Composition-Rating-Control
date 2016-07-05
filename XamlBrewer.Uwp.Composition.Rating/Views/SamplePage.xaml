@@ -34,7 +34,7 @@
                    VerticalAlignment="Center"
                    Grid.Row="1"
                    Grid.Column="2" />
-        
+
         <controls:Rating x:Name="Devils"
                          Maximum="4"
                          ItemHeight="60"

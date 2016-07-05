@@ -11,11 +11,11 @@ using Windows.UI.Xaml.Input;
 namespace XamlBrewer.Uwp.Controls
 {
     [TemplatePart(Name = ItemsPartName, Type = typeof(StackPanel))]
-    [TemplatePart(Name = InteractionPartName, Type = typeof(Grid))]
+    [TemplatePart(Name = InteractionPartName, Type = typeof(UIElement))]
     public class Rating : Control
     {
         private const string ItemsPartName = "PART_Items";
-        private const string InteractionPartName = "PART_Surface";
+        private const string InteractionPartName = "PART_Interaction";
 
         #region Dependency Property Registrations
 
@@ -62,9 +62,9 @@ namespace XamlBrewer.Uwp.Controls
             new PropertyMetadata(2, OnStructureChanged));
 
         public static readonly DependencyProperty IsInteractiveProperty = DependencyProperty.Register(
-            nameof(IsInteractive), 
-            typeof(bool), 
-            typeof(Rating), 
+            nameof(IsInteractive),
+            typeof(bool),
+            typeof(Rating),
             new PropertyMetadata(true));
 
         #endregion
@@ -134,7 +134,7 @@ namespace XamlBrewer.Uwp.Controls
 
             OnStructureChanged(this);
 
-            var surface = this.GetTemplateChild(InteractionPartName) as Grid;
+            var surface = this.GetTemplateChild(InteractionPartName) as UIElement;
             if (surface != null)
             {
                 surface.Tapped += Surface_Tapped;
@@ -171,10 +171,6 @@ namespace XamlBrewer.Uwp.Controls
             var panel = c.GetTemplateChild(ItemsPartName) as StackPanel;
             if (panel != null)
             {
-                var rightPadding = c.ItemPadding;
-
-                c.Clips.Clear();
-
                 // Load images.
                 var root = panel.GetVisual();
                 var compositor = root.Compositor;
@@ -188,6 +184,9 @@ namespace XamlBrewer.Uwp.Controls
                 var emptyBrush = compositor.CreateSurfaceBrush(image.Surface);
                 image = imageFactory.CreateImageFromUri(c.FilledImage, options);
                 var fullBrush = compositor.CreateSurfaceBrush(image.Surface);
+
+                var rightPadding = c.ItemPadding;
+                c.Clips.Clear();
 
                 for (int i = 0; i < c.Maximum; i++)
                 {
@@ -259,6 +258,16 @@ namespace XamlBrewer.Uwp.Controls
             }
         }
 
+        private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (!IsInteractive)
+            {
+                return;
+            }
+
+            Value = (int)(e.GetPosition(this).X / (ActualWidth + ItemPadding) * Maximum) + 1;
+        }
+
         private void Surface_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             if (!IsInteractive)
@@ -283,16 +292,6 @@ namespace XamlBrewer.Uwp.Controls
             }
 
             Value = value;
-        }
-
-        private void Surface_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (!IsInteractive)
-            {
-                return;
-            }
-
-            Value = (int)(e.GetPosition(this).X / (ActualWidth + ItemPadding) * Maximum) + 1;
         }
 
         public static double RoundToFraction(double number, double fraction)

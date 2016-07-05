@@ -13,7 +13,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center" />
                         <!-- Interacts with touch and mouse and so. -->
-                        <Grid x:Name="PART_Surface"
+                        <Grid x:Name="PART_Interaction"
                               ManipulationMode="TranslateX"
                               Background="Transparent" />
                     </Grid>
