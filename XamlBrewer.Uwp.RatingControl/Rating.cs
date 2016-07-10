@@ -252,7 +252,7 @@ namespace XamlBrewer.Uwp.Controls
                     else
                     {
                         // Curtain.
-                        c.Clips[i].RightInset = (float)(c.ItemHeight - c.ItemHeight * RoundToFraction(c.Value - Math.Floor(c.Value), c.StepFrequency));
+                        c.Clips[i].RightInset = (float)(c.ItemHeight * (1 +  Math.Floor(c.Value) - c.Value));
                     }
                 }
             }
