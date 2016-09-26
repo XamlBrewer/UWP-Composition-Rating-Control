@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Composition.Toolkit;
+﻿using Robmikh.CompositionSurfaceFactory;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Windows.Foundation;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -174,16 +175,6 @@ namespace XamlBrewer.Uwp.Controls
                 // Load images.
                 var root = panel.GetVisual();
                 var compositor = root.Compositor;
-                var options = new CompositionImageOptions()
-                {
-                    DecodeWidth = c.ItemHeight,
-                    DecodeHeight = c.ItemHeight
-                };
-                var imageFactory = CompositionImageFactory.CreateCompositionImageFactory(compositor);
-                var image = imageFactory.CreateImageFromUri(c.EmptyImage, options);
-                var emptyBrush = compositor.CreateSurfaceBrush(image.Surface);
-                image = imageFactory.CreateImageFromUri(c.FilledImage, options);
-                var fullBrush = compositor.CreateSurfaceBrush(image.Surface);
 
                 var rightPadding = c.ItemPadding;
                 c.Clips.Clear();
@@ -204,14 +195,19 @@ namespace XamlBrewer.Uwp.Controls
                     };
                     panel.Children.Add(grid);
                     var gridRoot = grid.GetVisual();
+                    var surfaceFactory = SurfaceFactory.CreateFromCompositor(compositor);
 
                     // Empty image.
+                    var surface = surfaceFactory.CreateSurfaceFromUri(c.EmptyImage, new Size(c.ItemHeight, c.ItemHeight), InterpolationMode.HighQualityCubic);
+                    var emptyBrush = compositor.CreateSurfaceBrush(surface);
                     var spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
                     gridRoot.Children.InsertAtTop(spriteVisual);
                     spriteVisual.Brush = emptyBrush;
 
                     // Filled image.
+                    surface = surfaceFactory.CreateSurfaceFromUri(c.FilledImage, new Size(c.ItemHeight, c.ItemHeight), InterpolationMode.HighQualityCubic);
+                    var fullBrush = compositor.CreateSurfaceBrush(surface);
                     spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
                     var clip = compositor.CreateInsetClip();
