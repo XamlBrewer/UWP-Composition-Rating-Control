@@ -14,3 +14,5 @@ Comes with the following dependency properties:
 Behavior:
 * Tap on an image to apply the integral value
 * Slide horizontally over the control to decrease and increase value with StepFrequency
+
+There's a blog post explaining the code right here: https://xamlbrewer.wordpress.com/2016/07/11/building-a-uwp-rating-control-using-xaml-and-the-composition-api/
