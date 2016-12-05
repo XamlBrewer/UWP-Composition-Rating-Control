@@ -1,13 +1,17 @@
-﻿using Robmikh.CompositionSurfaceFactory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Graphics.DirectX;
+using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Composition;
 
 namespace XamlBrewer.Uwp.Controls
 {
@@ -72,7 +76,7 @@ namespace XamlBrewer.Uwp.Controls
 
         public Rating()
         {
-            this.DefaultStyleKey = typeof(Rating);
+            DefaultStyleKey = typeof(Rating);
         }
 
         private List<InsetClip> Clips { get; set; } = new List<InsetClip>();
@@ -128,14 +132,14 @@ namespace XamlBrewer.Uwp.Controls
         /// <summary>
         /// Update the visual state of the control when its template is changed.
         /// </summary>
-        protected override void OnApplyTemplate()
+        protected override async void OnApplyTemplate()
         {
             // Ensures that ActualWidth is actually the actual width.
             HorizontalAlignment = HorizontalAlignment.Left;
 
-            OnStructureChanged(this);
+            await OnStructureChanged(this);
 
-            var surface = this.GetTemplateChild(InteractionPartName) as UIElement;
+            var surface = GetTemplateChild(InteractionPartName) as UIElement;
             if (surface != null)
             {
                 surface.Tapped += Surface_Tapped;
@@ -145,12 +149,12 @@ namespace XamlBrewer.Uwp.Controls
             base.OnApplyTemplate();
         }
 
-        private static void OnStructureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnStructureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            OnStructureChanged(d);
+            await OnStructureChanged(d);
         }
 
-        private static void OnStructureChanged(DependencyObject d)
+        private static async Task OnStructureChanged(DependencyObject d)
         {
             Rating c = (Rating)d;
 
@@ -175,6 +179,8 @@ namespace XamlBrewer.Uwp.Controls
                 // Load images.
                 var root = panel.GetVisual();
                 var compositor = root.Compositor;
+                var canvasDevice = new CanvasDevice();
+                var compositionDevice = CanvasComposition.CreateCompositionGraphicsDevice(compositor, canvasDevice);
 
                 var rightPadding = c.ItemPadding;
                 c.Clips.Clear();
@@ -195,10 +201,9 @@ namespace XamlBrewer.Uwp.Controls
                     };
                     panel.Children.Add(grid);
                     var gridRoot = grid.GetVisual();
-                    var surfaceFactory = SurfaceFactory.CreateFromCompositor(compositor);
 
                     // Empty image.
-                    var surface = surfaceFactory.CreateSurfaceFromUri(c.EmptyImage, new Size(c.ItemHeight, c.ItemHeight), InterpolationMode.HighQualityCubic);
+                    var surface = await LoadFromUri(canvasDevice, compositionDevice, c.EmptyImage, new Size(c.ItemHeight, c.ItemHeight));
                     var emptyBrush = compositor.CreateSurfaceBrush(surface);
                     var spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
@@ -206,7 +211,7 @@ namespace XamlBrewer.Uwp.Controls
                     spriteVisual.Brush = emptyBrush;
 
                     // Filled image.
-                    surface = surfaceFactory.CreateSurfaceFromUri(c.FilledImage, new Size(c.ItemHeight, c.ItemHeight), InterpolationMode.HighQualityCubic);
+                    surface = await LoadFromUri(canvasDevice, compositionDevice, c.FilledImage, new Size(c.ItemHeight, c.ItemHeight));
                     var fullBrush = compositor.CreateSurfaceBrush(surface);
                     spriteVisual = compositor.CreateSpriteVisual();
                     spriteVisual.Size = new Vector2(c.ItemHeight, c.ItemHeight);
@@ -216,6 +221,9 @@ namespace XamlBrewer.Uwp.Controls
                     gridRoot.Children.InsertAtTop(spriteVisual);
                     spriteVisual.Brush = fullBrush;
                 }
+
+                compositionDevice.Dispose();
+                canvasDevice.Dispose();
             }
 
             OnValueChanged(c);
@@ -248,7 +256,7 @@ namespace XamlBrewer.Uwp.Controls
                     else
                     {
                         // Curtain.
-                        c.Clips[i].RightInset = (float)(c.ItemHeight * (1 +  Math.Floor(c.Value) - c.Value));
+                        c.Clips[i].RightInset = (float)(c.ItemHeight * (1 + Math.Floor(c.Value) - c.Value));
                     }
                 }
             }
@@ -303,6 +311,35 @@ namespace XamlBrewer.Uwp.Controls
                 modulo *= -1;
 
             return number + modulo;
+        }
+
+        private static async Task<CompositionDrawingSurface> LoadFromUri(CanvasDevice canvasDevice, CompositionGraphicsDevice compositionDevice, Uri uri, Size sizeTarget)
+        {
+            CanvasBitmap bitmap = await CanvasBitmap.LoadAsync(canvasDevice, uri);
+            Size sizeSource = bitmap.Size;
+
+            if (sizeTarget.IsEmpty)
+            {
+                sizeTarget = sizeSource;
+            }
+
+            var surface = compositionDevice.CreateDrawingSurface(
+                sizeTarget,
+                DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                DirectXAlphaMode.Premultiplied);
+
+            using (var ds = CanvasComposition.CreateDrawingSession(surface))
+            {
+                ds.Clear(Color.FromArgb(0, 0, 0, 0));
+                ds.DrawImage(
+                    bitmap,
+                    new Rect(0, 0, sizeTarget.Width, sizeTarget.Height),
+                    new Rect(0, 0, sizeSource.Width, sizeSource.Height),
+                    1,
+                    CanvasImageInterpolation.HighQualityCubic);
+            }
+
+            return surface;
         }
     }
 

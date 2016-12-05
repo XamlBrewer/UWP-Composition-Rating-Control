@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "Robmikh.CompositionSurfaceFactory": "0.6.0-alpha"
+    "Win2D.uwp": "1.20.0"
   },
   "frameworks": {
     "uap10.0": {}
