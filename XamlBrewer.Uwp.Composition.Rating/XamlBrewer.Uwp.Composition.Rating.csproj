@@ -151,12 +151,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamlBrewer.Uwp.Rating\XamlBrewer.Uwp.Rating.csproj">
-      <Project>{f873e665-922f-4b1c-a22d-050781bcf222}</Project>
-      <Name>XamlBrewer.Uwp.Rating</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <SDKReference Include="WindowsMobile, Version=10.0.14393.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>

@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "XamlBrewer.Uwp.Rating": "1.0.0"
   },
   "frameworks": {
     "uap10.0": {}
