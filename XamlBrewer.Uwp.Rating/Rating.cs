@@ -46,13 +46,13 @@ namespace XamlBrewer.Uwp.Controls
             nameof(EmptyImage),
             typeof(Uri),
             typeof(Rating),
-            new PropertyMetadata(null, OnStructureChanged));
+            new PropertyMetadata(new Uri("ms-appx:///XamlBrewer.Uwp.Rating/Assets/defaultStar_empty.png"), OnStructureChanged));
 
         public static readonly DependencyProperty FilledImageProperty = DependencyProperty.Register(
             nameof(FilledImage),
             typeof(Uri),
             typeof(Rating),
-            new PropertyMetadata(null, OnStructureChanged));
+            new PropertyMetadata(new Uri("ms-appx:///XamlBrewer.Uwp.Rating/Assets/defaultStar_full.png"), OnStructureChanged));
 
         public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(
             nameof(ItemHeight),
@@ -156,16 +156,16 @@ namespace XamlBrewer.Uwp.Controls
 
         private static async Task OnStructureChanged(DependencyObject d)
         {
-            Rating c = (Rating)d;
+            var c = (Rating)d;
 
             if (c.EmptyImage == null)
             {
-                c.EmptyImage = new Uri("ms-appx:///XamlBrewer.Uwp.RatingControl/Assets/defaultStar_empty.png");
+                c.EmptyImage = new Uri("ms-appx:///XamlBrewer.Uwp.Rating/Assets/defaultStar_empty.png");
             }
 
             if (c.FilledImage == null)
             {
-                c.FilledImage = new Uri("ms-appx:///XamlBrewer.Uwp.RatingControl/Assets/defaultStar_full.png");
+                c.FilledImage = new Uri("ms-appx:///XamlBrewer.Uwp.Rating/Assets/defaultStar_full.png");
             }
 
             if ((c.StepFrequency <= 0) || (c.StepFrequency > 1))

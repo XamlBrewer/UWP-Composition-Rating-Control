@@ -5,7 +5,13 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlBrewer.Uwp.Composition.Rating", "XamlBrewer.Uwp.Composition.Rating\XamlBrewer.Uwp.Composition.Rating.csproj", "{A7C42754-679F-47FA-BAEB-6382351F320A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlBrewer.Uwp.RatingControl", "XamlBrewer.Uwp.RatingControl\XamlBrewer.Uwp.RatingControl.csproj", "{F873E665-922F-4B1C-A22D-050781BCF222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlBrewer.Uwp.Rating", "XamlBrewer.Uwp.Rating\XamlBrewer.Uwp.Rating.csproj", "{F873E665-922F-4B1C-A22D-050781BCF222}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{3542787F-F69C-4381-B97D-FE63E23DB57E}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.png = nuget.png
+		XamlBrewer.Uwp.Rating.nuspec = XamlBrewer.Uwp.Rating.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

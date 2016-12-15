@@ -20,6 +20,7 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
         <controls:Rating x:Name="Default"
                          ItemHeight="60"
                          ItemPadding="20"
@@ -86,5 +87,6 @@
                    VerticalAlignment="Center"
                    Grid.Row="4"
                    Grid.Column="2" />
+        
     </Grid>
 </Page>

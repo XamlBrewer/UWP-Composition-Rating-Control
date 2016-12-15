@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>XamlBrewer.Uwp.Rating</id>
+    <version>1.0.0.0</version>
+    <title>Rating Control for UWP</title>
+    <authors>Diederik Krols</authors>
+    <owners>xamlbrewer</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/XamlBrewer/UWP-Composition-Rating-Control</projectUrl>
+    <iconUrl>https://github.com/XamlBrewer/UWP-Composition-Rating-Control/blob/master/nuget.png?raw=true</iconUrl>
+    <description>A UWP Rating Control drawn by the Composition API.</description>
+    <copyright>© XAMLBrewer. All rights reserved.</copyright>
+    <tags>UWP Controls XAML Composition Rating</tags>
+    <dependencies>
+      <group targetFramework="uap10.0">
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
+        <dependency id="System.Numerics.Vectors" version="4.1.1" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Runtime.InteropServices.WindowsRuntime" version="4.0.1" />
+        <dependency id="System.Runtime.WindowsRuntime" version="4.0.11" />
+        <dependency id="System.Runtime.WindowsRuntime.UI.Xaml" version="4.0.1" />
+        <dependency id="System.Threading.Tasks" version="4.0.11" />
+        <dependency id="Win2D.uwp" version="1.19.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".\XamlBrewer.Uwp.Rating\bin\Release\XamlBrewer.Uwp.Rating.dll" target="lib\uap10.0" />
+    <file src=".\XamlBrewer.Uwp.Rating\bin\Release\XamlBrewer.Uwp.Rating.pdb" target="lib\uap10.0" />
+    <file src=".\XamlBrewer.Uwp.Rating\bin\Release\XamlBrewer.Uwp.Rating.pri" target="lib\uap10.0" />
+    <file src=".\XamlBrewer.Uwp.Rating\bin\Release\XamlBrewer.Uwp.Rating.xr.xml" target="lib\uap10.0\XamlBrewer.Uwp.Rating" />
+    <file src=".\XamlBrewer.Uwp.Rating\Themes\Generic.xaml" target="lib\uap10.0\XAMLBrewer.Uwp.Rating\Themes" />
+    <file src=".\XamlBrewer.Uwp.Rating\bin\Release\Themes\Generic.xbf" target="lib\uap10.0\XAMLBrewer.Uwp.Rating\Themes" />
+    <file src=".\XamlBrewer.Uwp.Rating\Assets\defaultStar_empty.png" target="lib\uap10.0\XAMLBrewer.Uwp.Rating\Assets" />
+    <file src=".\XamlBrewer.Uwp.Rating\Assets\defaultStar_full.png" target="lib\uap10.0\XAMLBrewer.Uwp.Rating\Assets" />
+  </files>
+</package>
