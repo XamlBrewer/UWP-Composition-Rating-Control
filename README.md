@@ -1,6 +1,12 @@
 # UWP-Composition-Rating-Control
 A UWP Rating Control drawn by the Composition API.
 
+##NuGet Package
+To install Rating Control for UWP, run the following command in the Package Manager Console
+
+PM> `Install-Package XamlBrewer.Uwp.Rating`
+
+##Properties and Behavior
 Comes with the following dependency properties:
 * Maximum (int): number of stars, maximum score
 * StepFrequency (double): rounding interval, a percentage (e.g. 0.25)
